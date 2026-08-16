@@ -63,7 +63,7 @@ export default function Home() {
       <main id="main-content">
         <section className="hero-section">
           <div className="section-shell hero-grid">
-            <Reveal className="hero-copy" amount={0.5}>
+            <div className="hero-copy">
               <p className="hero-eyebrow">AI-native pharma film studio</p>
               <h1>
                 Pharma stories,
@@ -80,11 +80,11 @@ export default function Home() {
                 </Link>
                 <WatchFilmButton />
               </div>
-            </Reveal>
+            </div>
 
-            <Reveal className="hero-visual" delay={0.12} amount={0.35}>
+            <div className="hero-visual">
               <HeroMedia />
-            </Reveal>
+            </div>
           </div>
         </section>
 
