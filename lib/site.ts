@@ -3,7 +3,7 @@ export const siteConfig = {
   description:
     "AI-native pharma films built for scientific clarity, cinematic impact, and rigorous review.",
   url:
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+    process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "") ??
     "https://molecular-frame.vercel.app",
 } as const;
 

@@ -23,16 +23,20 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const [mediaError, setMediaError] = useState(false);
+  const [mediaMounted, setMediaMounted] = useState(false);
 
   const openFilm = useCallback(() => {
     const dialog = dialogRef.current;
     if (!dialog || dialog.open) return;
     openerRef.current = document.activeElement as HTMLElement | null;
     setMediaError(false);
+    setMediaMounted(true);
     dialog.showModal();
     document.body.classList.add("modal-open");
     requestAnimationFrame(() => {
-      void videoRef.current?.play().catch(() => undefined);
+      requestAnimationFrame(() => {
+        void videoRef.current?.play().catch(() => undefined);
+      });
     });
   }, []);
 
@@ -75,7 +79,7 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
             </button>
           </div>
 
-          {mediaError ? (
+          {!mediaMounted ? null : mediaError ? (
             <div className="film-dialog__fallback" role="status">
               <p>The film could not load in this preview.</p>
               <Link

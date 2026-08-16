@@ -90,7 +90,7 @@ export default function Home() {
 
         <section className="flagship-section" aria-labelledby="flagship-title">
           <div className="flagship-stage">
-            <HeroMedia />
+            <HeroMedia active={false} />
             <WatchFilmButton
               className="film-play-button"
               label="Play flagship film"

@@ -1,10 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { aspirinMedia } from "@/lib/site";
 
-export function HeroMedia() {
+type HeroMediaProps = {
+  active?: boolean;
+};
+
+export function HeroMedia({ active = true }: HeroMediaProps) {
   const [unavailable, setUnavailable] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
@@ -12,13 +17,32 @@ export function HeroMedia() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (reduceMotion) {
+    const mobileLayout = window.matchMedia("(max-width: 900px)").matches;
+    if (reduceMotion || !active || mobileLayout) {
       video.pause();
       video.currentTime = 0;
       return;
     }
-    void video.play().catch(() => undefined);
-  }, [reduceMotion]);
+
+    let startTimer: number | undefined;
+    const queuePlayback = () => {
+      startTimer = window.setTimeout(() => {
+        video.preload = "auto";
+        void video.play().catch(() => undefined);
+      }, 300);
+    };
+
+    if (document.readyState === "complete") {
+      queuePlayback();
+    } else {
+      window.addEventListener("load", queuePlayback, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", queuePlayback);
+      if (startTimer !== undefined) window.clearTimeout(startTimer);
+    };
+  }, [active, reduceMotion]);
 
   return (
     <div
@@ -32,16 +56,24 @@ export function HeroMedia() {
         <span className="aspirin-fallback__cell aspirin-fallback__cell--three" />
         <span className="aspirin-fallback__signal" />
       </div>
+      <Image
+        className="hero-media__poster"
+        src={aspirinMedia.poster}
+        alt=""
+        fill
+        preload={active}
+        fetchPriority={active ? "high" : "auto"}
+        sizes="(max-width: 900px) calc(100vw - 32px), 48vw"
+        aria-hidden="true"
+      />
       {!unavailable ? (
         <video
           ref={videoRef}
           className="hero-media__video"
-          autoPlay={!reduceMotion}
           muted
           loop
           playsInline
-          preload="metadata"
-          poster={aspirinMedia.poster}
+          preload="none"
           onError={() => setUnavailable(true)}
           aria-hidden="true"
         >

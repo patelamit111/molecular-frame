@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ConceptFilmProps = {
   src: string;
@@ -16,6 +16,24 @@ export function ConceptFilm({
 }: ConceptFilmProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
+  const [showPoster, setShowPoster] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShowPoster(true);
+        observer.disconnect();
+      },
+      { rootMargin: "500px 0px" },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -47,7 +65,7 @@ export function ConceptFilm({
       loop
       playsInline
       preload="none"
-      poster={poster}
+      poster={showPoster ? poster : undefined}
       aria-hidden="true"
       tabIndex={-1}
     >

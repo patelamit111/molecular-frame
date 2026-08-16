@@ -20,6 +20,7 @@
   --radius-field: 12px;
   --shadow-tint: 0 30px 90px rgba(2, 12, 16, 0.42);
   --header-height: 72px;
+  --font-geist-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas;
   color-scheme: dark;
 }
 
@@ -393,6 +394,7 @@ video {
 }
 
 .hero-media__video,
+.hero-media__poster,
 .aspirin-fallback,
 .hero-media__scrim {
   position: absolute;
@@ -401,6 +403,7 @@ video {
   height: 100%;
 }
 
+.hero-media__poster,
 .hero-media__video {
   z-index: 1;
   object-fit: cover;
@@ -1421,6 +1424,10 @@ video {
 }
 
 @media (max-width: 900px) {
+  .hero-media__video {
+    display: none;
+  }
+
   .hero-section {
     min-height: auto;
   }
