@@ -9,6 +9,14 @@ type ConceptFilmProps = {
   className?: string;
 };
 
+type NavigatorWithConnection = Navigator & {
+  connection?: {
+    saveData?: boolean;
+    addEventListener?: (type: "change", listener: () => void) => void;
+    removeEventListener?: (type: "change", listener: () => void) => void;
+  };
+};
+
 export function ConceptFilm({
   src,
   poster,
@@ -17,6 +25,24 @@ export function ConceptFilm({
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
   const [showPoster, setShowPoster] = useState(false);
+  const [allowPlayback, setAllowPlayback] = useState(false);
+
+  useEffect(() => {
+    const compactQuery = window.matchMedia(
+      "(max-width: 900px), (pointer: coarse)",
+    );
+    const connection = (navigator as NavigatorWithConnection).connection;
+    const updatePolicy = () => {
+      setAllowPlayback(!compactQuery.matches && !connection?.saveData);
+    };
+    updatePolicy();
+    compactQuery.addEventListener("change", updatePolicy);
+    connection?.addEventListener?.("change", updatePolicy);
+    return () => {
+      compactQuery.removeEventListener("change", updatePolicy);
+      connection?.removeEventListener?.("change", updatePolicy);
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -37,7 +63,7 @@ export function ConceptFilm({
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || reduceMotion) {
+    if (!video || reduceMotion || !allowPlayback) {
       video?.pause();
       return;
     }
@@ -55,7 +81,7 @@ export function ConceptFilm({
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, [allowPlayback, reduceMotion]);
 
   return (
     <video

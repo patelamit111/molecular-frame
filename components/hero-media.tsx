@@ -9,16 +9,42 @@ type HeroMediaProps = {
   active?: boolean;
 };
 
+type NavigatorWithConnection = Navigator & {
+  connection?: {
+    saveData?: boolean;
+    addEventListener?: (type: "change", listener: () => void) => void;
+    removeEventListener?: (type: "change", listener: () => void) => void;
+  };
+};
+
 export function HeroMedia({ active = true }: HeroMediaProps) {
   const [unavailable, setUnavailable] = useState(false);
+  const [mobileLayout, setMobileLayout] = useState(true);
+  const [saveData, setSaveData] = useState(false);
+  const [posterReady, setPosterReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    const query = window.matchMedia("(max-width: 900px)");
+    const updateLayout = () => setMobileLayout(query.matches);
+    updateLayout();
+    query.addEventListener("change", updateLayout);
+    return () => query.removeEventListener("change", updateLayout);
+  }, []);
+
+  useEffect(() => {
+    const connection = (navigator as NavigatorWithConnection).connection;
+    const updateConnection = () => setSaveData(Boolean(connection?.saveData));
+    updateConnection();
+    connection?.addEventListener?.("change", updateConnection);
+    return () => connection?.removeEventListener?.("change", updateConnection);
+  }, []);
+
+  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const mobileLayout = window.matchMedia("(max-width: 900px)").matches;
-    if (reduceMotion || !active || mobileLayout) {
+    if (reduceMotion || !active || mobileLayout || saveData) {
       video.pause();
       video.currentTime = 0;
       return;
@@ -42,11 +68,13 @@ export function HeroMedia({ active = true }: HeroMediaProps) {
       window.removeEventListener("load", queuePlayback);
       if (startTimer !== undefined) window.clearTimeout(startTimer);
     };
-  }, [active, reduceMotion]);
+  }, [active, mobileLayout, reduceMotion, saveData]);
 
   return (
     <div
-      className="hero-media"
+      className={
+        posterReady ? "hero-media hero-media--poster-ready" : "hero-media"
+      }
       role="img"
       aria-label="Aspirin platelet-inhibition film preview"
     >
@@ -61,10 +89,11 @@ export function HeroMedia({ active = true }: HeroMediaProps) {
         src={aspirinMedia.poster}
         alt=""
         fill
-        preload={active}
+        loading="eager"
         fetchPriority={active ? "high" : "auto"}
         sizes="(max-width: 900px) calc(100vw - 32px), 48vw"
         aria-hidden="true"
+        onLoad={() => setPosterReady(true)}
       />
       {!unavailable ? (
         <video

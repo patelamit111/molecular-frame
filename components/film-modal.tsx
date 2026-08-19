@@ -10,10 +10,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { aspirinMedia } from "@/lib/site";
+import { filmCatalog, type FilmId } from "@/lib/site";
 
 type FilmContextValue = {
-  openFilm: () => void;
+  openFilm: (filmId?: FilmId) => void;
 };
 
 const FilmContext = createContext<FilmContextValue | null>(null);
@@ -22,13 +22,16 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const [activeFilmId, setActiveFilmId] = useState<FilmId>("aspirin");
   const [mediaError, setMediaError] = useState(false);
   const [mediaMounted, setMediaMounted] = useState(false);
+  const activeFilm = filmCatalog[activeFilmId];
 
-  const openFilm = useCallback(() => {
+  const openFilm = useCallback((filmId: FilmId = "aspirin") => {
     const dialog = dialogRef.current;
     if (!dialog || dialog.open) return;
     openerRef.current = document.activeElement as HTMLElement | null;
+    setActiveFilmId(filmId);
     setMediaError(false);
     setMediaMounted(true);
     dialog.showModal();
@@ -65,8 +68,8 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
         <div className="film-dialog__panel">
           <div className="film-dialog__header">
             <div>
-              <p className="film-dialog__label">Independent concept film</p>
-              <h2 id="film-title">Aspirin: platelet inhibition</h2>
+              <p className="film-dialog__label">{activeFilm.label}</p>
+              <h2 id="film-title">{activeFilm.title}</h2>
             </div>
             <button
               type="button"
@@ -83,27 +86,28 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
             <div className="film-dialog__fallback" role="status">
               <p>The film could not load in this preview.</p>
               <Link
-                href="/#pilot"
+                href="/#contact"
                 className="text-link"
                 onClick={closeFilm}
               >
-                Open the pilot brief
+                Open the project brief
               </Link>
             </div>
           ) : (
             <video
+              key={activeFilmId}
               ref={videoRef}
               className="film-dialog__video"
               controls
               playsInline
               preload="metadata"
-              poster={aspirinMedia.poster}
+              poster={activeFilm.poster}
               onError={() => setMediaError(true)}
             >
-              <source src={aspirinMedia.film} type="video/mp4" />
+              <source src={activeFilm.film} type="video/mp4" />
               <track
                 kind="captions"
-                src={aspirinMedia.captions}
+                src={activeFilm.captions}
                 srcLang="en"
                 label="English"
                 default
@@ -111,9 +115,7 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
               Your browser does not support HTML video.
             </video>
           )}
-          <p className="film-dialog__note">
-            Simplified scientific visualization. Not medical advice.
-          </p>
+          <p className="film-dialog__note">{activeFilm.note}</p>
         </div>
       </dialog>
     </FilmContext.Provider>
@@ -123,11 +125,15 @@ export function FilmModalProvider({ children }: { children: ReactNode }) {
 type WatchFilmButtonProps = {
   className?: string;
   label?: string;
+  filmId?: FilmId;
+  ariaLabel?: string;
 };
 
 export function WatchFilmButton({
   className = "button button--secondary",
-  label = "Watch the film",
+  label = "Watch film",
+  filmId = "aspirin",
+  ariaLabel,
 }: WatchFilmButtonProps) {
   const context = useContext(FilmContext);
   if (!context) {
@@ -135,7 +141,12 @@ export function WatchFilmButton({
   }
 
   return (
-    <button type="button" className={className} onClick={context.openFilm}>
+    <button
+      type="button"
+      className={className}
+      onClick={() => context.openFilm(filmId)}
+      aria-label={ariaLabel}
+    >
       <Play aria-hidden="true" weight="fill" />
       {label}
     </button>

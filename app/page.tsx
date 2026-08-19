@@ -1,20 +1,32 @@
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-} from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { Brand } from "@/components/brand";
 import { ConceptFilm } from "@/components/concept-film";
 import { WatchFilmButton } from "@/components/film-modal";
 import { HeroMedia } from "@/components/hero-media";
 import { PilotForm } from "@/components/pilot-form";
-import { ProcessStory } from "@/components/process-story";
 import { Reveal } from "@/components/reveal";
-import { siteConfig } from "@/lib/site";
+import { CinematicStage, HeroScrollScene } from "@/components/scroll-scenes";
+import { siteConfig, type FilmId } from "@/lib/site";
 
-const conceptFilms = [
+type ConceptStudy = {
+  title: string;
+  scope: string;
+  src: string;
+  poster: string;
+  className: string;
+  filmId?: FilmId;
+};
+
+const conceptFilms: readonly ConceptStudy[] = [
+  {
+    title: "Linsitinib",
+    scope: "Human scale to IGF-1R signaling",
+    src: "/media/concepts/linsitinib/linsitinib-hero-loop.mp4",
+    poster: "/media/concepts/linsitinib/linsitinib-poster.webp",
+    className: "concept-study concept-study--feature",
+    filmId: "linsitinib",
+  },
   {
     title: "Dantrolene",
     scope: "RyR1 binding and calcium release",
@@ -38,6 +50,27 @@ const conceptFilms = [
   },
 ];
 
+const offerings = [
+  {
+    number: "01",
+    title: "Mechanism-of-action films",
+    description:
+      "Bring molecular interactions, pathways, and patient relevance into one clear visual narrative.",
+  },
+  {
+    number: "02",
+    title: "Scientific and medical storytelling",
+    description:
+      "Turn dense evidence into memorable films for medical affairs, education, and stakeholder engagement.",
+  },
+  {
+    number: "03",
+    title: "Launch, congress, and campaign content",
+    description:
+      "Extend a flagship story into cutdowns, silent loops, social assets, and presentation-ready visuals.",
+  },
+] as const;
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
@@ -49,6 +82,7 @@ const structuredData = {
     "Pharmaceutical mechanism of action films",
     "Scientific visualization",
     "Medical animation",
+    "Pharmaceutical launch and congress content",
   ],
   audience: {
     "@type": "BusinessAudience",
@@ -62,79 +96,67 @@ export default function Home() {
     <>
       <main id="main-content">
         <section className="hero-section">
-          <div className="section-shell hero-grid">
-            <div className="hero-copy">
-              <p className="hero-eyebrow">AI-native pharma film studio</p>
+          <HeroScrollScene visual={<HeroMedia />}>
+            <>
+              <p className="hero-eyebrow">Scientific films for pharma</p>
               <h1>
-                Pharma stories,
-                <span>built at molecular speed.</span>
+                Make the science
+                <span>impossible to miss.</span>
               </h1>
               <p className="hero-lede">
-                AI-native films that make complex science clear, cinematic, and
-                ready for rigorous review.
+                Cinematic mechanism-of-action and medical films that turn
+                complex science into clear, memorable stories.
               </p>
               <div className="button-group">
-                <Link href="#pilot" className="button">
-                  Request a pilot
-                  <ArrowUpRight aria-hidden="true" weight="bold" />
+                <Link href="#work" className="button">
+                  View selected work
+                  <ArrowRight aria-hidden="true" weight="bold" />
                 </Link>
-                <WatchFilmButton />
+                <WatchFilmButton label="Watch featured film" />
               </div>
-            </div>
-
-            <div className="hero-visual">
-              <HeroMedia />
-            </div>
-          </div>
+            </>
+          </HeroScrollScene>
         </section>
 
-        <section className="flagship-section" aria-labelledby="flagship-title">
-          <div className="flagship-stage">
+        <section
+          id="work"
+          className="flagship-section"
+          aria-labelledby="flagship-title"
+        >
+          <CinematicStage className="flagship-stage">
             <HeroMedia active={false} />
             <WatchFilmButton
               className="film-play-button"
-              label="Play flagship film"
+              label="Watch film"
             />
-          </div>
+          </CinematicStage>
           <div className="section-shell flagship-copy">
-            <Reveal>
-              <p className="project-label">Independent concept film</p>
+            <Reveal distance={42}>
+              <p className="project-label">Featured independent concept film</p>
               <h2 id="flagship-title">Aspirin, seen at platelet scale.</h2>
             </Reveal>
-            <Reveal className="flagship-description" delay={0.08}>
+            <Reveal
+              className="flagship-description"
+              delay={0.08}
+              direction="right"
+              distance={32}
+            >
               <p>
-                A concise visual story of COX-1 acetylation, reduced thromboxane
-                signaling, and reduced platelet amplification.
+                A molecular-scale story of platelet inhibition, designed to make
+                a familiar mechanism feel immediate and memorable.
               </p>
-              <div className="source-links">
-                <a
-                  href="https://www.rcsb.org/structure/3N8Y"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Structural reference: PDB 3N8Y
-                  <ArrowUpRight aria-hidden="true" />
-                </a>
-                <a
-                  href="https://www.ncbi.nlm.nih.gov/books/NBK261078/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Mechanism reference: NCBI
-                  <ArrowUpRight aria-hidden="true" />
-                </a>
-              </div>
             </Reveal>
           </div>
         </section>
 
-        <section id="work" className="work-section" aria-labelledby="work-title">
+        <section className="work-section" aria-labelledby="work-title">
           <div className="section-shell">
             <Reveal className="section-heading">
-              <h2 id="work-title">Science with a pulse.</h2>
+              <p className="section-kicker">Selected work</p>
+              <h2 id="work-title">More from the gallery.</h2>
               <p>
-                Each study explores a different way to balance molecular detail,
-                spatial understanding, and brand-level craft.
+                Independent studies across molecular, pathway, anatomical, and
+                human scale.
               </p>
             </Reveal>
 
@@ -145,6 +167,16 @@ export default function Home() {
                   className={film.className}
                   delay={index * 0.06}
                   amount={0.12}
+                  direction={
+                    index === 0
+                      ? "up"
+                      : index === 1
+                        ? "left"
+                        : index === 2
+                          ? "right"
+                          : "up"
+                  }
+                  distance={index === 0 ? 34 : index === 3 ? 38 : 46}
                 >
                   <div className="concept-media">
                     <ConceptFilm
@@ -157,7 +189,17 @@ export default function Home() {
                       <p>Independent concept study</p>
                       <h3>{film.title}</h3>
                     </div>
-                    <span>{film.scope}</span>
+                    <div className="concept-caption__meta">
+                      <span>{film.scope}</span>
+                      {film.filmId ? (
+                        <WatchFilmButton
+                          filmId={film.filmId}
+                          className="concept-watch-button"
+                          label="Watch film"
+                          ariaLabel={`Watch the ${film.title} concept film`}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 </Reveal>
               ))}
@@ -165,120 +207,64 @@ export default function Home() {
           </div>
         </section>
 
-        <ProcessStory />
-
-        <section className="system-section" aria-labelledby="system-title">
-          <div className="section-shell system-layout">
-            <Reveal className="system-copy">
-              <h2 id="system-title">A studio now. A system underneath.</h2>
+        <section
+          id="services"
+          className="services-section"
+          aria-labelledby="services-title"
+        >
+          <div className="section-shell services-layout">
+            <Reveal className="services-heading" direction="left" distance={34}>
+              <p className="section-kicker">What we create</p>
+              <h2 id="services-title">
+                Films built for the moment the science needs to land.
+              </h2>
               <p>
-                Every film is organized as reusable evidence, claims, shots, and
-                masters. Revisions stay connected to the science behind them.
+                From a flagship film to the supporting content around it, we
+                create visual stories for the audiences and channels that matter.
               </p>
             </Reveal>
 
-            <Reveal className="production-system" delay={0.1}>
-              <div className="production-system__image">
-                <Image
-                  src="/media/concepts/dantrolene-poster.webp"
-                  alt="Molecular binding visualization from an independent Dantrolene concept study"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 56vw"
-                />
-              </div>
-              <div
-                className="production-flow"
-                role="list"
-                aria-label="Reusable production system"
-              >
-                {["Evidence", "Claims", "Shots", "Masters"].map(
-                  (item, index, all) => (
-                    <div
-                      key={item}
-                      className="production-flow__item"
-                      role="listitem"
-                    >
-                      <span>{item}</span>
-                      {index < all.length - 1 ? (
-                        <ArrowRight aria-hidden="true" />
-                      ) : null}
-                    </div>
-                  ),
-                )}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        <section
-          id="standards"
-          className="standards-section"
-          aria-labelledby="standards-title"
-        >
-          <div className="section-shell">
-            <Reveal className="standards-heading">
-              <p className="section-kicker">Scientific standards</p>
-              <h2 id="standards-title">
-                Show what is known. Mark what is simplified.
-              </h2>
-            </Reveal>
-
-            <div className="standards-composition">
-              <Reveal className="standards-image" amount={0.2}>
-                <Image
-                  src="/media/concepts/atorvastatin-poster.webp"
-                  alt="Protein and ligand visualization from an independent Atorvastatin concept study"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 54vw"
-                />
-              </Reveal>
-              <Reveal className="standards-principles" delay={0.08}>
-                <article>
-                  <Check aria-hidden="true" weight="bold" />
-                  <div>
-                    <h3>Structural anchors</h3>
-                    <p>
-                      Use traceable references for molecules, proteins, and
-                      clinically meaningful relationships.
-                    </p>
-                  </div>
-                </article>
-                <article>
-                  <Check aria-hidden="true" weight="bold" />
-                  <div>
-                    <h3>Declared simplification</h3>
-                    <p>
-                      Separate exact structural views from conceptual scenes that
-                      are designed for understanding.
-                    </p>
-                  </div>
-                </article>
-                <article>
-                  <Check aria-hidden="true" weight="bold" />
-                  <div>
-                    <h3>Reviewable provenance</h3>
-                    <p>
-                      Keep source notes, claim context, and revision history tied
-                      to the frames they inform.
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
+            <div className="services-list">
+              {offerings.map((offering, index) => (
+                <Reveal
+                  key={offering.title}
+                  className="service-item"
+                  delay={index * 0.07}
+                  direction="right"
+                  distance={28}
+                >
+                  <span className="service-item__number" aria-hidden="true">
+                    {offering.number}
+                  </span>
+                  <h3>{offering.title}</h3>
+                  <p>{offering.description}</p>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="pilot" className="pilot-section" aria-labelledby="pilot-title">
+        <section
+          id="contact"
+          className="pilot-section"
+          aria-labelledby="contact-title"
+        >
           <div className="section-shell pilot-layout">
-            <Reveal className="pilot-copy">
-              <p className="pilot-kicker">Start with one important story</p>
-              <h2 id="pilot-title">Bring us the mechanism that needs a film.</h2>
+            <Reveal className="pilot-copy" direction="left" distance={34}>
+              <p className="pilot-kicker">Start a project</p>
+              <h2 id="contact-title">Have a complex story to tell?</h2>
               <p>
-                Tell us the audience, review context, and what must become clear.
-                We will shape the right pilot.
+                Tell us the science, the audience, and the moment it needs to
+                serve. We will come back with a focused way to bring it to screen.
               </p>
             </Reveal>
-            <Reveal className="pilot-form-wrap" delay={0.1} amount={0.1}>
+            <Reveal
+              className="pilot-form-wrap"
+              delay={0.1}
+              amount={0.1}
+              direction="right"
+              distance={34}
+            >
               <PilotForm />
             </Reveal>
           </div>
@@ -289,16 +275,16 @@ export default function Home() {
         <div className="section-shell site-footer__inner">
           <div className="site-footer__brand">
             <Brand />
-            <p>AI-native films for complex pharmaceutical science.</p>
+            <p>Cinematic films for complex pharmaceutical science.</p>
           </div>
           <div className="site-footer__links">
             <Link href="/#work">Work</Link>
-            <Link href="/#process">Process</Link>
-            <Link href="/#standards">Standards</Link>
+            <Link href="/#services">Services</Link>
+            <Link href="/#contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>
           </div>
           <p className="site-footer__legal">
-            Independent concept studies. Not medical advice.
+            Independent concept studies are clearly labeled. Not medical advice.
           </p>
         </div>
       </footer>

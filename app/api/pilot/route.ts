@@ -137,7 +137,7 @@ export async function POST(request: Request) {
         "Molecular Frame <onboarding@resend.dev>",
       to: [inbox],
       replyTo: pilot.workEmail,
-      subject: `Pilot request from ${pilot.company}`,
+      subject: `Project inquiry from ${pilot.company}`,
       text: buildPlainText(pilot),
       html: buildHtml(pilot),
     });
@@ -270,7 +270,7 @@ function deliveryUnavailable(pilot?: PilotRequest, inbox?: string) {
 
 function buildMailto(pilot: PilotRequest, inbox: string) {
   const subject = encodeURIComponent(
-    `Molecular Frame pilot request — ${pilot.company}`,
+    `Molecular Frame project inquiry — ${pilot.company}`,
   );
   const body = encodeURIComponent(buildPlainText(pilot));
   return `mailto:${encodeURIComponent(inbox)}?subject=${subject}&body=${body}`;
@@ -278,7 +278,7 @@ function buildMailto(pilot: PilotRequest, inbox: string) {
 
 function buildPlainText(pilot: PilotRequest) {
   return [
-    "New Molecular Frame pilot request",
+    "New Molecular Frame project inquiry",
     "",
     `Name: ${pilot.name}`,
     `Work email: ${pilot.workEmail}`,
@@ -304,7 +304,7 @@ function buildHtml(pilot: PilotRequest) {
 
   return `
     <div style="font-family: Arial, sans-serif; color: #152127; line-height: 1.55; max-width: 680px; margin: 0 auto;">
-      <h1 style="font-size: 24px;">New Molecular Frame pilot request</h1>
+      <h1 style="font-size: 24px;">New Molecular Frame project inquiry</h1>
       <table style="width: 100%; border-collapse: collapse;">
         ${rows
           .map(

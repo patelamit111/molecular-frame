@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Molecular Frame",
     short_name: "Molecular Frame",
-    description: "AI-native pharma films for complex science.",
+    description: "Cinematic films for complex pharmaceutical science.",
     start_url: "/",
     display: "standalone",
     background_color: "#071014",

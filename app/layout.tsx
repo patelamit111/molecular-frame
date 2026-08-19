@@ -16,7 +16,7 @@ const geist = Geist({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Molecular Frame | AI-native pharma films",
+    default: "Molecular Frame | Cinematic pharma films",
     template: "%s | Molecular Frame",
   },
   description: siteConfig.description,
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "MOA animation",
     "medical animation",
     "scientific visualization",
-    "AI pharma video",
+    "pharmaceutical film studio",
   ],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Molecular Frame | Pharma stories, built at molecular speed",
+    title: "Molecular Frame | Make the science impossible to miss",
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Molecular Frame, AI-native pharma films",
+        alt: "Molecular Frame, cinematic films for pharmaceutical science",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molecular Frame | AI-native pharma films",
+    title: "Molecular Frame | Cinematic pharma films",
     description: siteConfig.description,
     images: ["/opengraph-image"],
   },

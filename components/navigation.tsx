@@ -5,11 +5,12 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Brand } from "@/components/brand";
+import { ScrollProgress } from "@/components/scroll-scenes";
 
 const links = [
   { href: "/#work", label: "Work" },
-  { href: "/#process", label: "Process" },
-  { href: "/#standards", label: "Standards" },
+  { href: "/#services", label: "Services" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Navigation() {
@@ -75,8 +76,8 @@ export function Navigation() {
           ))}
         </nav>
 
-        <Link href="/#pilot" className="button button--compact desktop-cta">
-          Request a pilot
+        <Link href="/#contact" className="button button--compact desktop-cta">
+          Start a project
           <ArrowUpRight aria-hidden="true" weight="bold" />
         </Link>
 
@@ -117,17 +118,18 @@ export function Navigation() {
                 </Link>
               ))}
               <Link
-                href="/#pilot"
+                href="/#contact"
                 className="button"
                 onClick={() => setMenuOpen(false)}
               >
-                Request a pilot
+                Start a project
                 <ArrowUpRight aria-hidden="true" weight="bold" />
               </Link>
             </div>
           </motion.nav>
         ) : null}
       </AnimatePresence>
+      <ScrollProgress />
     </header>
   );
 }

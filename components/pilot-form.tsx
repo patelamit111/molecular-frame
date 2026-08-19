@@ -129,7 +129,7 @@ export function PilotForm() {
 
       <div className="form-submit-row">
         <button className="button" type="submit" disabled={submitting}>
-          {submitting ? "Sending request" : "Request a pilot"}
+          {submitting ? "Sending brief" : "Send project brief"}
           <ArrowRight aria-hidden="true" weight="bold" />
         </button>
         <p>We use your information only to respond to this request.</p>

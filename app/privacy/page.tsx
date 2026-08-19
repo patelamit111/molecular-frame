@@ -5,7 +5,7 @@ import { Brand } from "@/components/brand";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "How Molecular Frame handles pilot-request information.",
+  description: "How Molecular Frame handles project-inquiry information.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -24,14 +24,14 @@ export default function PrivacyPage() {
         <article>
           <p className="section-kicker">Privacy</p>
           <h1>Clear, limited use of your information.</h1>
-          <p className="legal-page__updated">Last updated August 16, 2026</p>
+          <p className="legal-page__updated">Last updated August 19, 2026</p>
 
           <section>
             <h2>Information we collect</h2>
             <p>
-              When you request a pilot, we collect the information you enter in
-              the form, including your name, work email, company, role, therapy
-              area, timeline, and project brief.
+              When you send a project inquiry, we collect the information you
+              enter in the form, including your name, work email, company, role,
+              therapy area, timeline, and project brief.
             </p>
           </section>
 
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
             <h2>How we use it</h2>
             <p>
               We use this information to review your request, respond to you, and
-              plan a potential engagement. We do not sell pilot-request data.
+              plan a potential engagement. We do not sell project-inquiry data.
             </p>
           </section>
 
@@ -57,11 +57,11 @@ export default function PrivacyPage() {
             <p>
               We retain inquiries only as long as needed for business follow-up,
               recordkeeping, and applicable legal obligations. To request access,
-              correction, or deletion, use the pilot form and identify your note
-              as a privacy request.
+              correction, or deletion, use the project form and identify your
+              note as a privacy request.
             </p>
-            <Link href="/#pilot" className="text-link">
-              Open the pilot form
+            <Link href="/#contact" className="text-link">
+              Open the project form
             </Link>
           </section>
 
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
             <h2>Important submission note</h2>
             <p>
               Do not submit patient information, protected health information, or
-              confidential clinical data through the public pilot form.
+              confidential clinical data through the public project form.
             </p>
           </section>
         </article>

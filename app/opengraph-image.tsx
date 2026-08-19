@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Molecular Frame, AI-native pharma films";
+export const alt = "Molecular Frame, cinematic films for pharmaceutical science";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -75,7 +75,7 @@ export default function OpenGraphImage() {
               marginBottom: 24,
             }}
           >
-            AI-native pharma film studio
+            Scientific films for pharma
           </div>
           <div
             style={{
@@ -88,7 +88,7 @@ export default function OpenGraphImage() {
               fontWeight: 520,
             }}
           >
-            Pharma stories, built at molecular speed.
+            Make the science impossible to miss.
           </div>
         </div>
       </div>
